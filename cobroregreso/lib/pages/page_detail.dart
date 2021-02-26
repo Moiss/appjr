@@ -1,5 +1,3 @@
-import 'package:cobroregreso/models/model_imagenes.dart';
-import 'package:cobroregreso/pages/page_lista.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';

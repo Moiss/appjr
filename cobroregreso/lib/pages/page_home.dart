@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'package:cobroregreso/models/model_http.dart';
 import 'package:cobroregreso/pages/page_detail.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:toast/toast.dart';
 
 class PageHome extends StatefulWidget {
   PageHome({Key key}) : super(key: key);
@@ -10,6 +14,8 @@ class PageHome extends StatefulWidget {
 
 class _PageHomeState extends State<PageHome> {
   GlobalKey<FormState> _formKey = GlobalKey();
+  Login myLogin = Login();
+  List<TipoEmpleados> tipoEmpleados;
 
   bool _passwordVisible = false;
   TextEditingController controllerUsuario = TextEditingController();
@@ -23,6 +29,30 @@ class _PageHomeState extends State<PageHome> {
       ),
       body: _form(),
     );
+  }
+
+  Future<Null> _getLogin() async {
+    final response = await http.get(
+        "http://216.250.126.250/login/${controllerUsuario.text}/${controllerPassword.text}");
+    if (response.statusCode == 200) {
+      final result = json.decode(response.body);
+      Iterable list = result['TipoEmpleados'];
+      setState(() {
+        myLogin.admin = result['admin'];
+        myLogin.idSucursal = result['idSucursal'];
+        myLogin.idLogin = result["idLogin"];
+        myLogin.idEmpleado = result['idEmpleado'];
+        myLogin.nombre = result['nombre'];
+        myLogin.sucursal = result['sucursal'];
+        myLogin.tipoEmpleados =
+            list.map((e) => TipoEmpleados.fromJson(e)).toList();
+      });
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => DetailCobro()));
+    } else {
+      Toast.show("Error al obtener datos del API", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
+    }
   }
 
   Widget _form() {
@@ -91,8 +121,9 @@ class _PageHomeState extends State<PageHome> {
 
   void _validateForm() {
     if (_formKey.currentState.validate()) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => DetailCobro()));
+      _getLogin();
+      //Navigator.push(
+      //  context, MaterialPageRoute(builder: (context) => DetailCobro()));
     }
   }
 }
