@@ -40,19 +40,16 @@ class _PageHomeState extends State<PageHome> {
         .get("http://216.250.126.250/login/${_usuario}/${_contrasenia}/App");
     if (response.statusCode == 200) {
       final result = json.decode(response.body);
-      Iterable list = result['TipoEmpleados'];
       setState(() {
-        myLogin.admin = result['admin'];
-        myLogin.idSucursal = result['idSucursal'];
-        myLogin.idLogin = result["idLogin"];
-        myLogin.idEmpleado = result['idEmpleado'];
-        myLogin.nombre = result['nombre'];
-        myLogin.sucursal = result['sucursal'];
-        myLogin.tipoEmpleados =
-            list.map((e) => TipoEmpleados.fromJson(e)).toList();
+        myLogin = Login.fromJson(result);
       });
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => DetailCobro()));
+      if (myLogin.status == "200") {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => DetailCobro()));
+      } else {
+        Toast.show("Usuario y contrseña no validos", context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
+      }
     } else {
       Toast.show("Error al obtener datos del API", context,
           duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
