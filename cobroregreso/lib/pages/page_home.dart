@@ -17,7 +17,9 @@ class _PageHomeState extends State<PageHome> {
   Login myLogin = Login();
   List<TipoEmpleados> tipoEmpleados;
 
-  bool _passwordVisible = false;
+  String _usuario, _contrasenia;
+
+  bool _passwordVisible = true;
   TextEditingController controllerUsuario = TextEditingController();
   TextEditingController controllerPassword = TextEditingController();
 
@@ -32,8 +34,10 @@ class _PageHomeState extends State<PageHome> {
   }
 
   Future<Null> _getLogin() async {
-    final response = await http.get(
-        "http://216.250.126.250/login/${controllerUsuario.text}/${controllerPassword.text}");
+    _usuario = controllerUsuario.text;
+    _contrasenia = controllerPassword.text;
+    final response = await http
+        .get("http://216.250.126.250/login/${_usuario}/${_contrasenia}/App");
     if (response.statusCode == 200) {
       final result = json.decode(response.body);
       Iterable list = result['TipoEmpleados'];
