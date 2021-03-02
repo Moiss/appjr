@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -133,15 +135,23 @@ class _DetailCobroState extends State<DetailCobro> {
     return ListView(
       children: <Widget>[
         DrawerHeader(
-          child: Text("App para digitalizar el cobro al regreso"),
-          decoration: BoxDecoration(
-            color: Colors.blue,
+          margin: EdgeInsets.all(5),
+          child: Text(
+            "Digitalizacion del Cobro al Regreso",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white, fontSize: 18.0),
           ),
+          decoration: BoxDecoration(
+              border: Border.all(width: 1.0, color: Color(0xFF8A8888)),
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(15)),
         ),
-        ListTile(
-          title: Text("Enviar todas las Fotos"),
-          leading: Icon(Icons.send_sharp),
-          onTap: () {},
+        Card(
+          child: ListTile(
+            title: Text("Enviar todas las Fotos"),
+            leading: Icon(Icons.send_sharp),
+            onTap: () {},
+          ),
         )
       ],
     );
