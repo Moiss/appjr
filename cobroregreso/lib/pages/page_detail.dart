@@ -19,6 +19,9 @@ class _DetailCobroState extends State<DetailCobro> {
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
+          endDrawer: Drawer(
+            child: endDrawer(),
+          ),
           appBar: AppBar(
             bottom: TabBar(
               tabs: [
@@ -124,5 +127,23 @@ class _DetailCobroState extends State<DetailCobro> {
       _imagefile = File(_pickFile.path);
       _images.add(_imagefile);
     });
+  }
+
+  Widget endDrawer() {
+    return ListView(
+      children: <Widget>[
+        DrawerHeader(
+          child: Text("App para digitalizar el cobro al regreso"),
+          decoration: BoxDecoration(
+            color: Colors.blue,
+          ),
+        ),
+        ListTile(
+          title: Text("Enviar todas las Fotos"),
+          leading: Icon(Icons.send_sharp),
+          onTap: () {},
+        )
+      ],
+    );
   }
 }
